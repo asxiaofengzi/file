@@ -45,10 +45,14 @@ wget -O gz_client_bot.tar.gz "$ORACLE_GZ_CLIENT_BOT_URL"
 tar -zxvf gz_client_bot.tar.gz --exclude=client_config
 tar -zxvf gz_client_bot.tar.gz --skip-old-files client_config
 chmod +x sh_client_bot.sh
+# 禁用 sh_client_bot.sh 脚本中的 tail -f 命令
+ORACLE_SCRIPT="/root/oracle/sh_client_bot.sh"
+sed -i '/tail -f ${CLIENT_LOG_FILE}/s/^/#/' "$ORACLE_SCRIPT"
 bash sh_client_bot.sh
+sed -i 's/^\#\s*tail -f '${CLIENT_LOG_FILE}'//' /root/oracle/sh_client_bot.sh
 
 # 编辑client_config配置文件
-vi /root/oracle/client_config
+# vi /root/oracle/client_config
 
 # 运行oracle.sh脚本，假设该脚本存在于当前目录且具有执行权限
 mv /root/file/oracle.sh /root/oracle
